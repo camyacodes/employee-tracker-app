@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "express": "^4.17.2",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3"
+  },
+  "name": "employee-tracker-app",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "start": "node server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camyacodes/employee-tracker-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/camyacodes/employee-tracker-app/issues"
+  },
+  "homepage": "https://github.com/camyacodes/employee-tracker-app#readme",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
