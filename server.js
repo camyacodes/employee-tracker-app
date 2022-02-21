@@ -24,6 +24,17 @@ db.query(`SELECT * FROM departments`, (err, rows) => {
   console.log(rows);
 });
 
+// Create a candidate
+const sql = `INSERT INTO departments (id, name) 
+              VALUES (?,?)`;
+const params = [5, 'Meat'];
+
+db.query(sql, params, (err, result) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log(result);
+});
 
   // Default response for any other request (Not Found)
 app.use((req, res) => {
