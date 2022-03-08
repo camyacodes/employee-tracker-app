@@ -22,50 +22,71 @@ const db = mysql.createConnection(
 	console.log("Connected to the employee_tracker database.")
 );
 
-// Get all departments
-// db.query(`SELECT * FROM departments`, (err, rows) => {
-//   console.table(rows);
-// });
+// beginning message upon npm start
+console.log(`
+======================
+EMPLOYEE TRACKER APP
+======================
+`);
 
-inquirer
-	.prompt([
-		/* Pass your questions in here */
-		{
-			type: "list",
-			name: "initial",
-			message: "What would you like to do?",
-			choices: ["View all Departments", "Add Department"],
-		},
-	])
-	.then((answers) => {
-		// view all departments shows full table from query
-    let {initial} = answers
-		if (initial === "View all Departments") {
-			db.query(`SELECT * FROM departments`, (err, rows) => {
-				console.table(rows);
-			});
-    } else {
+//start function that asks what the user would like to do
+const employeeTrackerStart = () => {
+	return inquirer
+		.prompt([
+			/* Pass your questions in here */
+			{
+				type: "list",
+				name: "initial",
+				message: "What would you like to do?",
+				choices: ["View all Departments", "Add Department"],
+			},
+		])
+		.then((answers) => {
+			// switch cases that triggers specific function based on what the user wants to do
+			let { initial } = answers;
+			switch (initial) {
+				case "View all Departments":
+					allDepartments();
+					break;
+				case "Add Department":
+					addDepartment();
+					break;
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+};
 
-      console.log("add department")
-    }
-    
-	})
-	.catch((err) => {
-		console.log(err);
+//View all departments
+const allDepartments = () => {
+	db.query(`SELECT * FROM departments`, (err, rows) => {
+		console.table(rows);
+		if (err) console.log(err);
+		return employeeTrackerStart();
 	});
-// Create a candidate
-// const sql = `INSERT INTO departments (id, name)
-//               VALUES (?,?)`;
-// const params = [5, 'Meat'];
+};
 
-// db.query(sql, params, (err, result) => {
-//   if (err) {
-//     console.log(err);
-//   }
-//   console.log(result);
-// });
+//Add a department
+const addDepartment = () => {
+	return inquirer
+		.prompt([
+			{
+				type: "input",
+				name: "add_dept",
+				message: "What is the name of the department?",
+			},
+		])
+		.then((answers) => {
+			db.query(`INSERT INTO departments (name) VALUES (?)`, [answers.add_dept]);
+			return employeeTrackerStart();
+		});
+};
 
-// Default response for any other request (Not Found)
+employeeTrackerStart();
+
+
+//required to connect to the server and port
 app.use((req, res) => {
 	res.status(404).end();
 });
