@@ -96,11 +96,18 @@ const addDepartment = () => {
 
 //View all Roles
 const allRoles = () => {
-	db.query(`SELECT * FROM roles`, (err, rows) => {
-		console.table(rows);
-		if (err) console.log(err);
-		return employeeTrackerStart();
-	});
+	db.query(
+		`SELECT roles.id, roles.title, roles.salary, departments.name 
+	AS department_name 
+	FROM roles 
+	LEFT JOIN departments 
+	ON roles.department_id = departments.id`,
+		(err, rows) => {
+			console.table(rows);
+			if (err) console.log(err);
+			return employeeTrackerStart();
+		}
+	);
 };
 
 //Add a role
@@ -117,17 +124,14 @@ const addRole = () => {
 				type: "input",
 				message: "What salary will this role provide?",
 			},
-			// {
-			//     name: 'departmentId',
-			//     type: 'list',
-			//     choices: departments.map((departmentId) => {
-			//         return {
-			//             name: departmentId.department_name,
-			//             value: departmentId.id
-			//         }
-			//     }),
-			//     message: 'What department ID is this role associated with?',
-			// }
+			{
+				name: "departmentId",
+				type: "list",
+				choices: db.query(`SELECT department.id FROM departments`, async (err, res) => {
+					
+				} ),
+				message: "What department ID is this role associated with?",
+			},
 		])
 		.then((answers) => {
 			db.query(`INSERT INTO roles (title, salary) VALUES (?,?)`, [
