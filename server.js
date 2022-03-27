@@ -38,7 +38,12 @@ const employeeTrackerStart = () => {
 				type: "list",
 				name: "initial",
 				message: "What would you like to do?",
-				choices: ["View all Departments", "Add Department"],
+				choices: [
+					"View all Departments",
+					"Add Department",
+					"View All Roles",
+					"Add Role",
+				],
 			},
 		])
 		.then((answers) => {
@@ -50,6 +55,12 @@ const employeeTrackerStart = () => {
 					break;
 				case "Add Department":
 					addDepartment();
+					break;
+				case "View All Roles":
+					allRoles();
+					break;
+				case "Add Role":
+					addRole();
 					break;
 			}
 		})
@@ -83,8 +94,51 @@ const addDepartment = () => {
 		});
 };
 
-employeeTrackerStart();
+//View all Roles
+const allRoles = () => {
+	db.query(`SELECT * FROM roles`, (err, rows) => {
+		console.table(rows);
+		if (err) console.log(err);
+		return employeeTrackerStart();
+	});
+};
 
+//Add a role
+const addRole = () => {
+	return inquirer
+		.prompt([
+			{
+				name: "title",
+				type: "input",
+				message: "What is the name of your new role?",
+			},
+			{
+				name: "salary",
+				type: "input",
+				message: "What salary will this role provide?",
+			},
+			// {
+			//     name: 'departmentId',
+			//     type: 'list',
+			//     choices: departments.map((departmentId) => {
+			//         return {
+			//             name: departmentId.department_name,
+			//             value: departmentId.id
+			//         }
+			//     }),
+			//     message: 'What department ID is this role associated with?',
+			// }
+		])
+		.then((answers) => {
+			db.query(`INSERT INTO roles (title, salary) VALUES (?,?)`, [
+				answers.title,
+				answers.salary,
+			]);
+			return employeeTrackerStart();
+		});
+};
+
+employeeTrackerStart();
 
 //required to connect to the server and port
 app.use((req, res) => {
