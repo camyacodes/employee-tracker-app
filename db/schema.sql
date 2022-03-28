@@ -25,6 +25,9 @@ CREATE TABLE employees (
   last_name VARCHAR(50) NOT NULL,
   role_id INT NOT NULL,
   manager_id INT,
+  CONSTRAINT fk_manager
+  FOREIGN KEY (manager_id)
+  REFERENCES employees(id),
   CONSTRAINT fk_role 
   FOREIGN KEY (role_id) 
   REFERENCES roles(id)

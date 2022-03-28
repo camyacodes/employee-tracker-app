@@ -43,6 +43,8 @@ const employeeTrackerStart = () => {
 					"Add Department",
 					"View All Roles",
 					"Add Role",
+					"View all Employees",
+					"Add Employee",
 				],
 			},
 		])
@@ -61,6 +63,12 @@ const employeeTrackerStart = () => {
 					break;
 				case "Add Role":
 					addRole();
+					break;
+				case "View all Employees":
+					allEmployees();
+					break;
+				case "Add Employee":
+					addEmployee();
 					break;
 			}
 		})
@@ -116,9 +124,11 @@ const addRole = () => {
 		if (err) throw err;
 
 		let deptNamesArray = [];
-		res.forEach((departments) => {deptNamesArray.push(departments.name);});
+		res.forEach((departments) => {
+			deptNamesArray.push(departments.name);
+		});
 
-		console.log(deptNamesArray)
+		console.log(deptNamesArray);
 
 		return inquirer
 			.prompt([
@@ -140,24 +150,51 @@ const addRole = () => {
 				},
 			])
 			.then((answers) => {
-				
 				let departmentId;
 
 				res.forEach((department) => {
-				  if (answers.departmentId === department.name) {departmentId = department.id;}
+					if (answers.departmentId === department.name) {
+						departmentId = department.id;
+					}
 				});
 
-				console.log(departmentId)
+				console.log(departmentId);
 
-				db.query(`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`, [
-					answers.title,
-					answers.salary,
-					departmentId
-				]);
+				db.query(
+					`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`,
+					[answers.title, answers.salary, departmentId]
+				);
 				return employeeTrackerStart();
 			});
 	});
 };
+
+// View all employees
+
+const allEmployees = () => {
+	db.query(
+		`SELECT employees.id, 
+	employees.first_name, 
+	employees.last_name, 
+	roles.title, 
+	departments.name AS 'department', 
+	roles.salary,
+	employees.manager_id AS 'manager'
+	FROM employees, roles, departments
+	WHERE departments.id = roles.department_id 
+	AND employees.role_id = roles.id
+	`,
+		(err, rows) => {
+			console.table(rows);
+			if (err) console.log(err);
+			return employeeTrackerStart();
+		}
+	);
+};
+
+// Add Employee
+
+
 
 employeeTrackerStart();
 
