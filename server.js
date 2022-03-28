@@ -173,16 +173,15 @@ const addRole = () => {
 
 const allEmployees = () => {
 	db.query(
-		`SELECT employees.id, 
+	`SELECT employees.id, 
 	employees.first_name, 
 	employees.last_name, 
-	roles.title, 
+	roles.title AS role, 
 	departments.name AS 'department', 
-	roles.salary,
-	employees.manager_id AS 'manager'
+	roles.salary
 	FROM employees, roles, departments
 	WHERE departments.id = roles.department_id 
-	AND employees.role_id = roles.id
+	AND roles.id = employees.role_id
 	`,
 		(err, rows) => {
 			console.table(rows);
@@ -194,6 +193,54 @@ const allEmployees = () => {
 
 // Add Employee
 
+const addEmployee = () => {
+	db.query(`SELECT * FROM roles`, async (err, res) => {
+		if (err) throw err;
+
+		let roleNamesArray = [];
+		res.forEach((roles) => {
+			roleNamesArray.push(roles.title);
+		});
+
+		console.log(roleNamesArray);
+
+		return inquirer
+			.prompt([
+				{
+					name: "first_name",
+					type: "input",
+					message: "What is the employee's first name?",
+				},
+				{
+					name: "last_name",
+					type: "input",
+					message: "What is the employee's last name?",
+				},
+				{
+					name: "role",
+					type: "list",
+					choices: roleNamesArray,
+					message: "What is the employee's role?",
+				},
+			])
+			.then((answers) => {
+
+				let roleId;
+
+				res.forEach((role) => {
+					if (answers.role === role.title) {
+						roleId = role.id;
+					}
+				});
+
+				db.query(
+					`INSERT INTO employees (first_name, last_name, role_id) VALUES (?,?,?)`,
+					[answers.first_name, answers.last_name, roleId]
+				);
+				return employeeTrackerStart();
+			});
+	});
+};
 
 
 employeeTrackerStart();

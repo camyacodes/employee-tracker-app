@@ -11,15 +11,15 @@ VALUES
     ('Pharmacist', 78000, 3),
     ('Customer Care Associate', 35000, 1);
 
-INSERT INTO employees (first_name, last_name, role_id, manager_id)
+INSERT INTO employees (first_name, last_name, role_id)
 VALUES
-    ('Lewys', 'Everett', 1, NULL),
-    ('Idrees', 'Harper', 2, NULL),
-    ('Kieran', 'Timms', 1, 2),
-    ('Kayla', 'Baldwin', 3, 1),
-    ('Ammar', 'East', 3, 1),
-    ('Honor', 'Markham', 2, 1),
-    ('Samirah', 'Johnston', 1, 2),
-    ('Zayd', 'Everett', 3, 2);
+    ('Lewys', 'Everett', 1),
+    ('Idrees', 'Harper', 2),
+    ('Kieran', 'Timms', 1),
+    ('Kayla', 'Baldwin', 3),
+    ('Ammar', 'East', 3),
+    ('Honor', 'Markham', 2),
+    ('Samirah', 'Johnston', 3),
+    ('Zayd', 'Everett', 3);
     
 
