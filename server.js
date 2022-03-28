@@ -96,46 +96,67 @@ const addDepartment = () => {
 
 //View all Roles
 const allRoles = () => {
-	db.query(`SELECT * FROM roles`, (err, rows) => {
-		console.table(rows);
-		if (err) console.log(err);
-		return employeeTrackerStart();
-	});
+	db.query(
+		`SELECT roles.id, roles.title, roles.salary, departments.name 
+	AS department_name 
+	FROM roles 
+	LEFT JOIN departments 
+	ON roles.department_id = departments.id`,
+		(err, rows) => {
+			console.table(rows);
+			if (err) console.log(err);
+			return employeeTrackerStart();
+		}
+	);
 };
 
 //Add a role
 const addRole = () => {
-	return inquirer
-		.prompt([
-			{
-				name: "title",
-				type: "input",
-				message: "What is the name of your new role?",
-			},
-			{
-				name: "salary",
-				type: "input",
-				message: "What salary will this role provide?",
-			},
-			// {
-			//     name: 'departmentId',
-			//     type: 'list',
-			//     choices: departments.map((departmentId) => {
-			//         return {
-			//             name: departmentId.department_name,
-			//             value: departmentId.id
-			//         }
-			//     }),
-			//     message: 'What department ID is this role associated with?',
-			// }
-		])
-		.then((answers) => {
-			db.query(`INSERT INTO roles (title, salary) VALUES (?,?)`, [
-				answers.title,
-				answers.salary,
-			]);
-			return employeeTrackerStart();
-		});
+	db.query(`SELECT * FROM departments`, async (err, res) => {
+		if (err) throw err;
+
+		let deptNamesArray = [];
+		res.forEach((departments) => {deptNamesArray.push(departments.name);});
+
+		console.log(deptNamesArray)
+
+		return inquirer
+			.prompt([
+				{
+					name: "title",
+					type: "input",
+					message: "What is the name of the role?",
+				},
+				{
+					name: "salary",
+					type: "input",
+					message: "What is the salary of the role?",
+				},
+				{
+					name: "departmentId",
+					type: "list",
+					choices: deptNamesArray,
+					message: "Which department does the role belong to?",
+				},
+			])
+			.then((answers) => {
+				
+				let departmentId;
+
+				res.forEach((department) => {
+				  if (answers.departmentId === department.name) {departmentId = department.id;}
+				});
+
+				console.log(departmentId)
+
+				db.query(`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`, [
+					answers.title,
+					answers.salary,
+					departmentId
+				]);
+				return employeeTrackerStart();
+			});
+	});
 };
 
 employeeTrackerStart();
