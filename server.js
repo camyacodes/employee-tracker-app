@@ -316,10 +316,15 @@ const updateEmployee = () => {
 							console.log("*****Updated employee's role*****");
 						});
 						// return employeeTrackerStart()
-					});
+					})
+				.then(() => {
+					return employeeTrackerStart()
+				})
 			}
 		);
+		
 	});
+	
 };
 
 employeeTrackerStart();
