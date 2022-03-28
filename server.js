@@ -98,6 +98,7 @@ const addDepartment = () => {
 		])
 		.then((answers) => {
 			db.query(`INSERT INTO departments (name) VALUES (?)`, [answers.add_dept]);
+			console.log("*****" + answers.add_dept + " has been added to Departments*****")
 			return employeeTrackerStart();
 		});
 };
@@ -128,7 +129,7 @@ const addRole = () => {
 			deptNamesArray.push(departments.name);
 		});
 
-		console.log(deptNamesArray);
+	
 
 		return inquirer
 			.prompt([
@@ -158,12 +159,13 @@ const addRole = () => {
 					}
 				});
 
-				console.log(departmentId);
+				
 
 				db.query(
 					`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`,
 					[answers.title, answers.salary, departmentId]
 				);
+				console.log("*****" + answers.title + " has been added to Roles*****")
 				return employeeTrackerStart();
 			});
 	});
@@ -202,7 +204,7 @@ const addEmployee = () => {
 			roleNamesArray.push(roles.title);
 		});
 
-		console.log(roleNamesArray);
+
 
 		return inquirer
 			.prompt([
@@ -237,11 +239,14 @@ const addEmployee = () => {
 					`INSERT INTO employees (first_name, last_name, role_id) VALUES (?,?,?)`,
 					[answers.first_name, answers.last_name, roleId]
 				);
+				console.log("*****" + answers.first_name + " has been added to Employees*****")
+
 				return employeeTrackerStart();
 			});
 	});
 };
 
+// Update Employee
 
 employeeTrackerStart();
 
