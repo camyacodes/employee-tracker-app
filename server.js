@@ -288,6 +288,13 @@ const updateEmployee = () => {
 						},
 					])
 					.then((answers) => {
+						let nameId;
+						res.forEach((employees) => {
+							if (answers.Name === employees.Name) {
+								nameId = employees.id;
+							}
+						});
+						// console.log(nameId);
 						db.query(`SELECT * FROM roles`, async (err, res) => {
 							if (err) throw err;
 
@@ -295,14 +302,6 @@ const updateEmployee = () => {
 							res.forEach((roles) => {
 								roleNamesArray.push(roles.title);
 							});
-							let nameId;
-							res.forEach((employees) => {
-								if (answers.Name === employees.Name) {
-									nameId = employees.id;
-								}
-							});
-
-							let newRoleId;
 
 							res.forEach((roles) => {
 								if (answers.newRole === roles.title) {
@@ -311,12 +310,12 @@ const updateEmployee = () => {
 							});
 							db.query(
 								`UPDATE employees SET role_id = ? WHERE id = ?`,
-								[newRoleId],
-								[nameId]
+								[newRoleId, nameId],
+							
 							);
 							console.log("*****Updated employee's role*****");
 						});
-						return employeeTrackerStart()
+						// return employeeTrackerStart()
 					});
 			}
 		);
