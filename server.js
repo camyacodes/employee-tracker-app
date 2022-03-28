@@ -122,16 +122,16 @@ const addRole = () => {
 
 		return inquirer
 			.prompt([
-				// {
-				// 	name: "title",
-				// 	type: "input",
-				// 	message: "What is the name of the role?",
-				// },
-				// {
-				// 	name: "salary",
-				// 	type: "input",
-				// 	message: "What is the salary of the role?",
-				// },
+				{
+					name: "title",
+					type: "input",
+					message: "What is the name of the role?",
+				},
+				{
+					name: "salary",
+					type: "input",
+					message: "What is the salary of the role?",
+				},
 				{
 					name: "departmentId",
 					type: "list",
@@ -149,12 +149,12 @@ const addRole = () => {
 
 				console.log(departmentId)
 
-				// db.query(`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`, [
-				// 	answers.title,
-				// 	answers.salary,
-
-				// ]);
-				// return employeeTrackerStart();
+				db.query(`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`, [
+					answers.title,
+					answers.salary,
+					departmentId
+				]);
+				return employeeTrackerStart();
 			});
 	});
 };
