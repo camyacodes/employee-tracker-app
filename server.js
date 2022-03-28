@@ -45,6 +45,7 @@ const employeeTrackerStart = () => {
 					"Add Role",
 					"View all Employees",
 					"Add Employee",
+					"Update Employee",
 				],
 			},
 		])
@@ -69,6 +70,9 @@ const employeeTrackerStart = () => {
 					break;
 				case "Add Employee":
 					addEmployee();
+					break;
+				case "Update Employee":
+					updateEmployee();
 					break;
 			}
 		})
@@ -98,7 +102,9 @@ const addDepartment = () => {
 		])
 		.then((answers) => {
 			db.query(`INSERT INTO departments (name) VALUES (?)`, [answers.add_dept]);
-			console.log("*****" + answers.add_dept + " has been added to Departments*****")
+			console.log(
+				"*****" + answers.add_dept + " has been added to Departments*****"
+			);
 			return employeeTrackerStart();
 		});
 };
@@ -129,8 +135,6 @@ const addRole = () => {
 			deptNamesArray.push(departments.name);
 		});
 
-	
-
 		return inquirer
 			.prompt([
 				{
@@ -159,13 +163,11 @@ const addRole = () => {
 					}
 				});
 
-				
-
 				db.query(
 					`INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`,
 					[answers.title, answers.salary, departmentId]
 				);
-				console.log("*****" + answers.title + " has been added to Roles*****")
+				console.log("*****" + answers.title + " has been added to Roles*****");
 				return employeeTrackerStart();
 			});
 	});
@@ -175,7 +177,7 @@ const addRole = () => {
 
 const allEmployees = () => {
 	db.query(
-	`SELECT employees.id, 
+		`SELECT employees.id, 
 	employees.first_name, 
 	employees.last_name, 
 	roles.title AS role, 
@@ -204,8 +206,6 @@ const addEmployee = () => {
 			roleNamesArray.push(roles.title);
 		});
 
-
-
 		return inquirer
 			.prompt([
 				{
@@ -226,7 +226,6 @@ const addEmployee = () => {
 				},
 			])
 			.then((answers) => {
-
 				let roleId;
 
 				res.forEach((role) => {
@@ -239,7 +238,9 @@ const addEmployee = () => {
 					`INSERT INTO employees (first_name, last_name, role_id) VALUES (?,?,?)`,
 					[answers.first_name, answers.last_name, roleId]
 				);
-				console.log("*****" + answers.first_name + " has been added to Employees*****")
+				console.log(
+					"*****" + answers.first_name + " has been added to Employees*****"
+				);
 
 				return employeeTrackerStart();
 			});
@@ -247,6 +248,80 @@ const addEmployee = () => {
 };
 
 // Update Employee
+
+const updateEmployee = () => {
+	db.query(`SELECT * FROM roles`, async (err, res) => {
+		if (err) throw err;
+
+		let roleNamesArray = [];
+		res.forEach((roles) => {
+			roleNamesArray.push(roles.title);
+		});
+		// console.log(roleNamesArray);
+
+		db.query(
+			`SELECT CONCAT(first_name," ", last_name) AS Name, id, role_id FROM employees`,
+			async (err, res) => {
+				if (err) throw err;
+
+				let employNamesArray = [];
+				res.forEach((employees) => {
+					employNamesArray.push(employees.Name);
+				});
+				// 		console.log(employNamesArray);
+				// console.log(roleNamesArray);
+
+				return inquirer
+					.prompt([
+						{
+							name: "Name",
+							type: "list",
+							choices: employNamesArray,
+							message: "Which employees role do you want to update?",
+						},
+						{
+							name: "newRole",
+							type: "list",
+							choices: roleNamesArray,
+							message:
+								"Which role do you want to assign the selected employee?",
+						},
+					])
+					.then((answers) => {
+						db.query(`SELECT * FROM roles`, async (err, res) => {
+							if (err) throw err;
+
+							let roleNamesArray = [];
+							res.forEach((roles) => {
+								roleNamesArray.push(roles.title);
+							});
+							let nameId;
+							res.forEach((employees) => {
+								if (answers.Name === employees.Name) {
+									nameId = employees.id;
+								}
+							});
+
+							let newRoleId;
+
+							res.forEach((roles) => {
+								if (answers.newRole === roles.title) {
+									newRoleId = roles.id;
+								}
+							});
+							db.query(
+								`UPDATE employees SET role_id = ? WHERE id = ?`,
+								[newRoleId],
+								[nameId]
+							);
+							console.log("*****Updated employee's role*****");
+						});
+						return employeeTrackerStart()
+					});
+			}
+		);
+	});
+};
 
 employeeTrackerStart();
 
