@@ -9,7 +9,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Connect to database
+// // Connect to database
 const db = mysql.createConnection(
 	{
 		host: "localhost",
@@ -315,7 +315,6 @@ const updateEmployee = () => {
 							);
 							console.log("*****Updated employee's role*****");
 						});
-						// return employeeTrackerStart()
 					})
 				.then(() => {
 					return employeeTrackerStart()
@@ -329,10 +328,13 @@ const updateEmployee = () => {
 
 employeeTrackerStart();
 
-//required to connect to the server and port
+// required to connect to the server and port
 app.use((req, res) => {
 	res.status(404).end();
 });
+
+
+
 
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
