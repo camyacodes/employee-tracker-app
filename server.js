@@ -40,6 +40,8 @@ const employeeTrackerStart = () => {
 					"View all Employees",
 					"Add Employee",
 					"Update Employee",
+					"Remove Employee",
+					"Exit",
 				],
 			},
 		])
@@ -67,6 +69,13 @@ const employeeTrackerStart = () => {
 					break;
 				case "Update Employee":
 					updateEmployee();
+					break;
+				case "Remove Employee":
+					deleteEmployee();
+					break;
+				case "Exit":
+					console.log("Goodbye!");
+					db.end();
 					break;
 			}
 		})
@@ -317,6 +326,54 @@ const updateEmployee = () => {
 		);
 		
 	});
+	
+};
+
+
+// Delete Employee
+
+const deleteEmployee = () => {
+
+		db.query(
+			`SELECT CONCAT(first_name," ", last_name) AS Name, id, role_id FROM employees`,
+			async (err, res) => {
+				if (err) throw err;
+
+				let employNamesArray = [];
+				res.forEach((employees) => {
+					employNamesArray.push(employees.Name);
+				});
+
+				return inquirer
+					.prompt([
+						{
+							name: "Name",
+							type: "list",
+							choices: employNamesArray,
+							message: "Which employee do you want to remove?",
+						},
+					])
+					.then((answers) => {
+						let nameId;
+						res.forEach((employees) => {
+							if (answers.Name === employees.Name) {
+								nameId = employees.id;
+							}
+						});
+						db.query(
+							`DELETE FROM employees WHERE id = ?`,
+							nameId, (err, rows) => { 
+								if(err) throw err; 
+						console.log("*****Removed employee*****");
+					});
+					})
+				.then(() => {
+					return employeeTrackerStart()
+				})
+			}
+		);
+		
+	
 	
 };
 
