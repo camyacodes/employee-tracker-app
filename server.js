@@ -1,13 +1,7 @@
-const express = require("express");
+require('dotenv').config();
 const mysql = require("mysql2");
 var inquirer = require("inquirer");
-const cTable = require("console.table");
-const PORT = process.env.PORT || 3001;
-const app = express();
 
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 // // Connect to database
 const db = mysql.createConnection(
@@ -16,7 +10,7 @@ const db = mysql.createConnection(
 		// Your MySQL username,
 		user: "root",
 		// Your MySQL password
-		password: "",
+		password: process.env.SQL_PW,
 		database: "employee_tracker",
 	},
 	console.log("Connected to the employee_tracker database.")
@@ -328,14 +322,3 @@ const updateEmployee = () => {
 
 employeeTrackerStart();
 
-// required to connect to the server and port
-app.use((req, res) => {
-	res.status(404).end();
-});
-
-
-
-
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-});
