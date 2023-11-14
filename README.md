@@ -8,18 +8,10 @@ AS A business owner
 I WANT to be able to view and manage the departments, roles, and employees in my company
 SO THAT I can organize and plan my business
 
-## Technologies
-
-- Node.js
-- MySQL
-- dotenv
-- Inquirer
-- console.table
-
 ## Video Demonstration 
-https://drive.google.com/file/d/1na6jlH68PWwrLA7c1tLm_MictMdoprtQ/view
+<!-- https://drive.google.com/file/d/1na6jlH68PWwrLA7c1tLm_MictMdoprtQ/view -->
 
-## 🛠 Technologies 
+## Technologies 
 
 **Runtime:** Node.js
 
@@ -28,24 +20,21 @@ https://drive.google.com/file/d/1na6jlH68PWwrLA7c1tLm_MictMdoprtQ/view
 **Dependencies:** 
 
     "console.table": "^0.10.0",
-    "inquirer": "^8.2.4",
-    "mysql2": "^3.0.1",
+    "dotenv": "^16.3.1",
+    "inquirer": "^8.0.0",
+    "mysql2": "3.6.3"
 
+## Installation
 
-## 💾 Installation
-
-With the package.json file, use jest to excute the tests in the terminal by the following command:
+Download this repository or fork and clone it to your local device.
+Run an `npm install` to install all of the dependencies.
+Create a `.env` file and add your MySQL password to it:
 ```
-npm i
+SQL_PW="<password>"
 ```
-
 ## Usage
 
-To excute MySQL shell in the terminal by the following command:
-```
-mysql -u root
-```
-or if you have a password for database try:
+Begin by running the following commands in your MySQL shell terminal:
 ```
 mysql -u root -p
 ```
@@ -57,7 +46,7 @@ To seed the database:
 ```
 SOURCE db/seeds.sql;
 ```
-To run the application:
+Then in your node terminal start the application by running:
 ```
 node server.js
 ```
