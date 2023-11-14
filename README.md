@@ -4,9 +4,9 @@
 This repo is for a command-line application used to manage a company's employee database. 
 
 ## User Story 
-AS A business owner
-I WANT to be able to view and manage the departments, roles, and employees in my company
-SO THAT I can organize and plan my business
+AS A business owner<br />
+I WANT to be able to view and manage the departments, roles, and employees in my company<br />
+SO THAT I can organize and plan my business<br />
 
 ## Video Demonstration 
 <!-- https://drive.google.com/file/d/1na6jlH68PWwrLA7c1tLm_MictMdoprtQ/view -->
@@ -26,8 +26,8 @@ SO THAT I can organize and plan my business
 
 ## Installation
 
-Download this repository or fork and clone it to your local device.
-Run an `npm install` to install all of the dependencies.
+Download this repository or fork and clone it to your local device.<br />
+Run an `npm install` to install all of the dependencies.<br />
 Create a `.env` file and add your MySQL password to it:
 ```
 SQL_PW="<password>"
@@ -38,11 +38,15 @@ Begin by running the following commands in your MySQL shell terminal:
 ```
 mysql -u root -p
 ```
+Create the database:
+```
+SOURCE db/db.sql
+```
 then source the schema file:
 ```
 SOURCE db/schema.sql;
 ```
-To seed the database:
+Finally seed the database:
 ```
 SOURCE db/seeds.sql;
 ```
