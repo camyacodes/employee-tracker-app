@@ -3,6 +3,11 @@
 ## Description
 This repo is for a command-line application used to manage a company's employee database. 
 
+LIVE DEMO: https://drive.google.com/file/d/1EbPelo9oTSIc4W9YH0quBUAriEszRTmy/view?usp=sharing
+![image](https://github.com/camyacodes/employee-tracker-app/assets/87587644/00b9c51e-629f-46cd-aa34-b10cfb26047a)
+
+
+
 ## User Story 
 AS A business owner<br />
 I WANT to be able to view and manage the departments, roles, and employees in my company<br />
