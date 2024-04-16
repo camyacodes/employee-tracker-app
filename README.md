@@ -1,7 +1,7 @@
 # Employee Tracker
 
 ## Description
-This repo is for a command-line application used to manage a company's employee database. 
+This repo is for a command-line application used to manage a company's employee database, using Node.js, MySQL, and Inquirer.
 
 LIVE DEMO: https://drive.google.com/file/d/1EbPelo9oTSIc4W9YH0quBUAriEszRTmy/view?usp=sharing
 ![image](https://github.com/camyacodes/employee-tracker-app/assets/87587644/00b9c51e-629f-46cd-aa34-b10cfb26047a)
@@ -20,7 +20,7 @@ SO THAT I can organize and plan my business<br />
 
 **Runtime:** Node.js
 
-**Lanuage:** SQL, Javascript
+**Lanuage:** MySQL, Javascript
 
 **Dependencies:** 
 
