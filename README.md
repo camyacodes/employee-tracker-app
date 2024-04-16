@@ -20,7 +20,7 @@ SO THAT I can organize and plan my business<br />
 
 **Runtime:** Node.js
 
-**Lanuage:** Javascript
+**Lanuage:** SQL, Javascript
 
 **Dependencies:** 
 
